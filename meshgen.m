@@ -6,12 +6,12 @@ close all
 clear all
 
 % define the mesh size
-n = 50;
-m = 50;
+n = 80; % y-direction
+m = 4; % x-direction
 
 % Length of the rectangle HxL
-L = 1.0;
-H = 1.0;
+H = 80.0; % y-direction
+L = 4.0; % x-direction
 
 num_nodes = (n + 1)*(m + 1);
 num_elem = (n)*(m);
@@ -19,9 +19,9 @@ num_sd = 2;
 
 for i = 1:(n+1)
     for j = 1:(m+1)
-        node_num(i, j) = j + (n + 1)*(i - 1);
-        node_x(i, j) = -L/2 + (i - 1)*(L/n);
-        node_y(i, j) = -H/2 + (j - 1)*(H/m);
+        node_num(i, j) = j + (m + 1)*(i - 1);
+        node_y(i, j) = -H/2 + (i - 1)*(H/n);
+        node_x(i, j) = -L/2 + (j - 1)*(L/m);
     end
 end
 
@@ -109,8 +109,8 @@ fprintf(fid, '*nodes\n');
 fprintf(fid, '%d  # number of nodes\n', (n+1)*(m+1));
 fprintf(fid, '2   # number of spatial dimensions\n');
 
-Xs = reshape(node_x, 1, (m+1)*(n+1));
-Ys = reshape(node_y, 1, (m+1)*(n+1));
+Xs = reshape(node_x', 1, (m+1)*(n+1));
+Ys = reshape(node_y', 1, (m+1)*(n+1));
 
 for k = 1:(m+1)*(n+1)
     fprintf(fid, '\t%d', k);
