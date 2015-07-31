@@ -1,17 +1,19 @@
 % This code will create a rectangle element with n*m quadrilateral mesh for
 % Tahoe input gemoetry (the format file is Tahoe I or II)
 % by Saman Seifi (April 2015)
-
+clc
 close all
 clear all
 
-% define the mesh size
-n = 80; % y-direction
-m = 4; % x-direction
-
 % Length of the rectangle HxL
-H = 80.0; % y-direction
-L = 4.0; % x-direction
+H = input('Length: ');  % x-direction
+L = input('Height: ');  % y-direction
+
+% Get the mesh size
+meshsize = input('mesh size: ');
+
+n = H/meshsize;
+m = L/meshsize;
 
 num_nodes = (n + 1)*(m + 1);
 num_elem = (n)*(m);
