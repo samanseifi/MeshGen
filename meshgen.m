@@ -6,14 +6,14 @@ close all
 clear all
 
 % Length of the rectangle HxL
-H = input('Length: ');  % x-direction
-L = input('Height: ');  % y-direction
+L = input('Length: ');  % x-direction
+H = input('Height: ');  % y-direction
 
 % Get the mesh size
 meshsize = input('mesh size: ');
 
-n = H/meshsize;
-m = L/meshsize;
+n = L/meshsize;
+m = H/meshsize;
 
 num_nodes = (n + 1)*(m + 1);
 num_elem = (n)*(m);
@@ -22,8 +22,8 @@ num_sd = 2;
 for i = 1:(n+1)
     for j = 1:(m+1)
         node_num(i, j) = j + (m + 1)*(i - 1);
-        node_y(i, j) = -H/2 + (i - 1)*(H/n);
-        node_x(i, j) = -L/2 + (j - 1)*(L/m);
+        node_y(i, j) = -L/2 + (i - 1)*(L/n);
+        node_x(i, j) = -H/2 + (j - 1)*(H/m);
     end
 end
 
@@ -33,7 +33,7 @@ for i = 1:n
     end
 end
 
-filename = sprintf('%dx%d.geom',n ,m);
+filename = sprintf('%dx%d.geom', n ,m);
 fid = fopen(filename, 'w');
 
 fprintf(fid, '*version\n');
@@ -48,13 +48,15 @@ fprintf(fid, '#  [ID]  [nel]  [nen]\n');
 fprintf(fid, '1  %d  4\n', n*m);
 fprintf(fid, '4  # number of node sets\n');  % 4 node ID sets is choosen as default
 fprintf(fid, '#  [ID]  [nnd]\n');
-
 fprintf(fid, '%d\t%d\n', 1, n + 1);
 fprintf(fid, '%d\t%d\n', 2, m + 1);
 fprintf(fid, '%d\t%d\n', 3, n + 1);
 fprintf(fid, '%d\t%d\n', 4, m + 1);
 
-fprintf(fid, '0  # number of side sets\n');  % 0 side sets as default
+fprintf(fid, '2  # number of side sets\n');  % for now left and right
+fprintf(fid, '[ID]  [associate block ID]  [ns]\n');
+fprintf(fid, '%d\t%d\t%d\n', 1, 1, m);
+fprintf(fid, '%d\t%d\t%d\n', 2, 1, m);
 fprintf(fid, '# end dimensions\n');
 fprintf(fid, '*nodesets\n');
 fprintf(fid, '*set\n');
@@ -90,7 +92,21 @@ for i = 1:(m+1)
 end
 fprintf(fid, '\n');
 fprintf(fid, '# end node sets\n');
+
+% Defining the side sets for passivation usage
 fprintf(fid, '*sidesets\n');
+fprintf(fid, '*set\n');
+fprintf(fid, '%d\n', m);
+for j = 1:m
+    fprintf(fid, '%d\t4\n', 1 + n*(j - 1)); % Left side (side=4)
+end
+fprintf(fid, '*set\n');
+fprintf(fid, '%d\n', m);
+for j = 1:m
+    fprintf(fid, '%d\t2\n', n + n*(j - 1)); % Right side (side=2)
+end 
+
+% Elements
 fprintf(fid, '*elements\n');
 fprintf(fid, '*set\n');
 fprintf(fid, '%d  # number of elements\n', n*m);
