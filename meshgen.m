@@ -53,13 +53,10 @@ fprintf(fid, '%d\t%d\n', 2, m + 1);
 fprintf(fid, '%d\t%d\n', 3, n + 1);
 fprintf(fid, '%d\t%d\n', 4, m + 1);
 
-<<<<<<< HEAD
 fprintf(fid, '3  # number of side sets\n');  % for now left and right
 fprintf(fid, '# [ID]  [associate block ID]  [ns]\n');
-=======
 fprintf(fid, '2  # number of side sets\n');  % for now left and right
 fprintf(fid, '#  [ID]  [associate block ID]  [ns]\n');
->>>>>>> 1a69bdace3f25b1ef551e15d78d78abde11de553
 fprintf(fid, '%d\t%d\t%d\n', 1, 1, m);
 fprintf(fid, '%d\t%d\t%d\n', 2, 1, m);
 fprintf(fid, '%d\t%d\t%d\n', 3, 1, n);
