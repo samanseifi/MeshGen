@@ -1,6 +1,6 @@
 % This code will create a rectangle element with n*m quadrilateral mesh for
 % Tahoe input gemoetry (the format file is Tahoe I or II)
-% by Saman Seifi (April 2015)
+% by Saman Seifi (April 2015) last update: (Jan 2016)
 clc
 close all
 clear all
@@ -53,10 +53,16 @@ fprintf(fid, '%d\t%d\n', 2, m + 1);
 fprintf(fid, '%d\t%d\n', 3, n + 1);
 fprintf(fid, '%d\t%d\n', 4, m + 1);
 
+<<<<<<< HEAD
+fprintf(fid, '3  # number of side sets\n');  % for now left and right
+fprintf(fid, '# [ID]  [associate block ID]  [ns]\n');
+=======
 fprintf(fid, '2  # number of side sets\n');  % for now left and right
 fprintf(fid, '#  [ID]  [associate block ID]  [ns]\n');
+>>>>>>> 1a69bdace3f25b1ef551e15d78d78abde11de553
 fprintf(fid, '%d\t%d\t%d\n', 1, 1, m);
 fprintf(fid, '%d\t%d\t%d\n', 2, 1, m);
+fprintf(fid, '%d\t%d\t%d\n', 3, 1, n);
 fprintf(fid, '# end dimensions\n');
 fprintf(fid, '*nodesets\n');
 fprintf(fid, '*set\n');
@@ -98,13 +104,18 @@ fprintf(fid, '*sidesets\n');
 fprintf(fid, '*set\n');
 fprintf(fid, '%d\n', m);
 for j = 1:m
-    fprintf(fid, '%d\t4\n', 1 + n*(j - 1)); % Left side (side=4)
+    fprintf(fid, '%d\t4\n', 1 + n*(j - 1)); % Left side (face side number = 4)
 end
 fprintf(fid, '*set\n');
 fprintf(fid, '%d\n', m);
 for j = 1:m
-    fprintf(fid, '%d\t2\n', n + n*(j - 1)); % Right side (side=2)
-end 
+    fprintf(fid, '%d\t2\n', n + n*(j - 1)); % Right side (face side number = 2)
+end  
+fprintf(fid, '*set\n');
+fprintf(fid, '%d\n', n);
+for j = 1:n
+    fprintf(fid, '%d\t1\n', 1 + n*(m - 1) + (j - 1));
+end
 
 % Elements
 fprintf(fid, '*elements\n');
@@ -138,9 +149,3 @@ for k = 1:(m+1)*(n+1)
 end
 
 fclose(fid);
-
-
-
-
-
-    
